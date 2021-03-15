@@ -2,7 +2,7 @@
 # @Author: prateek
 # @Date:   2021-03-06 21:48:25
 # @Last Modified by:   prateek
-# @Last Modified time: 2021-03-15 17:44:46
+# @Last Modified time: 2021-03-15 18:14:55
 
 import streamlit as st 
 import numpy as np 
@@ -77,6 +77,7 @@ with col5:
 	pass
 with col3 :
 	recommend = st.button('Recommend')
+
 if recommend and select_movie !='-':
 	my_bar = st.progress(0)
 	for percent_complete in range(100):
@@ -87,8 +88,6 @@ if recommend and select_movie !='-':
 	recommendations = give_rec(select_movie,sig).reset_index(drop=True)
 	for i in range(1,count+1):
 		display(recommendations.iloc[i],i)
-
-
 	total = 0
 	pred = 0
 	with open('counts.txt','r+') as f:
@@ -99,7 +98,7 @@ if recommend and select_movie !='-':
 	total+=1
 	pred+=count
 	line_to_write = str(total)+','+str(pred)
-	with open('counts.txt','w') as f:
+	with open('counts.txt','w+') as f:
 		f.write(line_to_write)
 	f.close()
 
@@ -123,7 +122,6 @@ else:
 	x.columns = ['Title','Popularity','Weighted Average']
 	st.markdown("""## Top Rated Movies based on Popularity """)
 	st.dataframe(x)
-
 
 with open('counts.txt','r+') as f:
             data = f.readlines()
