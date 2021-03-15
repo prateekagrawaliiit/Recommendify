@@ -2,7 +2,7 @@
 # @Author: prateek
 # @Date:   2021-03-06 21:48:25
 # @Last Modified by:   prateek
-# @Last Modified time: 2021-03-15 17:41:42
+# @Last Modified time: 2021-03-15 17:44:46
 
 import streamlit as st 
 import numpy as np 
@@ -63,7 +63,9 @@ st.markdown("""###### Note : Just start typing in the box and it will filter aut
 movies_list = ['-']
 for movie in data['original_title'].unique():
 	movies_list.append(movie)
-select_movie = st.selectbox('Select a Movie :',movies_list)
+
+st.write("")
+select_movie = st.selectbox('Select a movie',movies_list)
 col1, col2, col3 , col4, col5 = st.beta_columns(5)
 with col1:
 	pass
