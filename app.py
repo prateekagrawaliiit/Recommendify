@@ -2,7 +2,7 @@
 # @Author: prateek
 # @Date:   2021-03-06 21:48:25
 # @Last Modified by:   prateek
-# @Last Modified time: 2021-03-15 17:21:09
+# @Last Modified time: 2021-03-15 17:41:42
 
 import streamlit as st 
 import numpy as np 
@@ -59,8 +59,11 @@ st.sidebar.markdown("""Recommendify uses the overview of movies along with pears
 
 # st.sidebar.markdown("""Please select the number of movies :""")
 count = st.sidebar.slider("Number of movies to predict :", 1, 20, 10, 1)
-
-select_movie = st.selectbox('Select a Movie :',data['original_title'].unique())
+st.markdown("""###### Note : Just start typing in the box and it will filter automatically. {You dont need to press backspace}""")
+movies_list = ['-']
+for movie in data['original_title'].unique():
+	movies_list.append(movie)
+select_movie = st.selectbox('Select a Movie :',movies_list)
 col1, col2, col3 , col4, col5 = st.beta_columns(5)
 with col1:
 	pass
@@ -72,7 +75,7 @@ with col5:
 	pass
 with col3 :
 	recommend = st.button('Recommend')
-if recommend:
+if recommend and select_movie !='-':
 	my_bar = st.progress(0)
 	for percent_complete in range(100):
 		time.sleep(0.01)
@@ -97,6 +100,18 @@ if recommend:
 	with open('counts.txt','w') as f:
 		f.write(line_to_write)
 	f.close()
+
+elif recommend and select_movie=='-':
+	st.error('Please select a valid movie')
+	st.markdown("""## Top Rated Movies using a Weighted Average """)
+	x = top_movies_avg.head(count)[['original_title','weighted_average','popularity']]
+	x.columns = ['Title','Weighted Average','Popularity']
+	st.dataframe(x)
+	x = top_movies_pop.head(count)[['original_title','popularity','weighted_average']]
+	x.columns = ['Title','Popularity','Weighted Average']
+	st.markdown("""## Top Rated Movies based on Popularity """)
+	st.dataframe(x)
+
 else:
 	st.markdown("""## Top Rated Movies using a Weighted Average """)
 	x = top_movies_avg.head(count)[['original_title','weighted_average','popularity']]
